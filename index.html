@@ -455,6 +455,9 @@
     .dist { font-size: 13px; color: #aab0dd; }
     .dist b { color: #fff; font-weight: 400; }
 
+    .jelly.sound { padding: 10px 18px; font-size: 12px; cursor: pointer; }
+    .jelly.sound[aria-pressed="true"] { background: linear-gradient(180deg, #fff0f8 0%, #ffb3dd 45%, #ff6fb8 100%); }
+
     .near-pop {
       width: min(340px, 90%);
       text-align: left;
@@ -778,6 +781,7 @@
           <span class="blip" style="--x:.6;--y:.7;--c:#dcb08a">SARA</span>
         </div>
         <p class="dist px">DISTANCE BETWEEN THEM <b id="dist">1240 M</b></p>
+        <button class="jelly sound" id="sound" aria-pressed="false">🔈 TAP FOR SOUND</button>
         <div class="notif dark-notif near-pop" id="nearPop">
           <div class="notif-top"><span class="app-ic"><img src="neari-logo-clean.png" alt=""></span><span>NEARI</span><span>now</span></div>
           <strong>NEAR ✦</strong>
@@ -893,10 +897,12 @@
       }
     };
 
-    let lastT = -1;
+    let lastT = -1, radarT = 0, radarVisible = false;
     const onScroll = () => {
       const r = radar.getBoundingClientRect();
       const t = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));
+      radarT = t;
+      radarVisible = r.top < innerHeight && r.bottom > 0;
       if (Math.abs(t - lastT) < .005) return;
       lastT = t;
       scope.style.setProperty("--k", (1 - t).toFixed(3));
@@ -908,6 +914,45 @@
     };
     addEventListener("scroll", () => requestAnimationFrame(onScroll), { passive: true });
     onScroll();
+
+    // ---- radar sound: pings speed up as they get closer, then the phone "NEAR" chime when they meet.
+    // Browsers only allow audio after a tap, hence the sound button.
+    const soundBtn = document.getElementById("sound");
+    let audio = null, wasMet = false;
+    const tone = (freq, at, dur = .15, vol = .18) => {
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.frequency.value = freq;
+      g.gain.setValueAtTime(.0001, at);
+      g.gain.exponentialRampToValueAtTime(vol, at + .01);
+      g.gain.exponentialRampToValueAtTime(.0001, at + dur);
+      o.connect(g).connect(audio.destination);
+      o.start(at);
+      o.stop(at + dur);
+    };
+    const ping = () => {
+      if (audio.state === "running" && radarVisible) {
+        const now = audio.currentTime;
+        if (radarT > .96) {
+          if (!wasMet) {
+            tone(880, now, .2);
+            tone(1320, now + .15, .35);
+            navigator.vibrate?.([80, 60, 80]);
+          }
+          wasMet = true;
+        } else {
+          wasMet = false;
+          tone(600 + radarT * 500, now, .08, .1);
+        }
+      }
+      setTimeout(ping, 1100 - radarT * 900);
+    };
+    soundBtn.addEventListener("click", () => {
+      const on = soundBtn.getAttribute("aria-pressed") !== "true";
+      if (!audio) { audio = new AudioContext(); ping(); }
+      on ? audio.resume() : audio.suspend();
+      soundBtn.setAttribute("aria-pressed", on);
+      soundBtn.textContent = on ? "🔊 SOUND ON" : "🔈 TAP FOR SOUND";
+    });
 
     // ---- "closer than yesterday": count the days you came back
     const visits = document.getElementById("visits");
