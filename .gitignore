@@ -1,0 +1,6 @@
+# only the site files are published
+*
+!.gitignore
+!index.html
+!neari-logo-clean.png
+!girl-*.jpg

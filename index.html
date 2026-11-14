@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0e0e16">
+  <title>NEARI — Closer Than Yesterday</title>
+  <meta name="description" content="Four girls. One app. Closer than yesterday. Coming March 2027.">
+  <meta property="og:title" content="NEARI — Closer Than Yesterday">
+  <meta property="og:description" content="Mo, Liz, Sele & Sara never meant to meet. Their phones had other plans. March 2027.">
+  <meta property="og:image" content="neari-logo-clean.png">
+  <link rel="icon" href="neari-logo-clean.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Yellowtail&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.classList.add("js")</script>
+
+  <style>
+    :root {
+      --ink: #16163a;
+      --bezel: #0e0e16;
+      --sky: #5b7cff;
+      --mist: #f3f5ff;
+      --lime: #d6f77a;
+      --lime-2: #a7dc4f;
+      --pink: #ff86cc;
+      --butter: #f6ec7a;
+      --night: #0a0a18;
+      --pixel: "Silkscreen", monospace;
+      --script: "Yellowtail", cursive;
+      --body: "Space Grotesk", system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bezel);
+      color: var(--ink);
+      font-family: var(--body);
+      padding: 14px;
+      overflow-x: hidden;
+    }
+
+    .px { font-family: var(--pixel); letter-spacing: 1px; }
+    .script { font-family: var(--script); font-weight: 400; }
+
+    /* every section is a little screen, like a handheld console */
+    .screen {
+      position: relative;
+      max-width: 1280px;
+      margin: 0 auto 14px;
+      border-radius: 28px;
+      overflow: clip;
+      background: linear-gradient(180deg, #5b7cff 0%, #a8b9ff 28%, #f3f5ff 55%, #c5d0ff 80%, #7b95ff 100%);
+    }
+
+    .screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, #ffffff1a 0 1px, transparent 1px 3px);
+    }
+
+    .dots {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle, #ffffff90 1px, transparent 1.6px) 0 0 / 10px 10px;
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+      mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+    }
+
+    .status {
+      position: relative;
+      z-index: 6;
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 24px;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    /* ---------- decorations ---------- */
+    .deco {
+      position: absolute;
+      pointer-events: none;
+      animation: float 5s ease-in-out infinite;
+      animation-delay: var(--d, 0s);
+    }
+    .deco.spark { fill: #fff; filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #ffffffaa); }
+    .deco.fly { fill: var(--pink); animation-name: flutter; animation-duration: 3s; }
+    .deco.fly.lime { fill: var(--lime-2); }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-14px) rotate(6deg); }
+    }
+    @keyframes flutter {
+      0%, 100% { transform: translate(0, 0) scaleX(1); }
+      25% { transform: translate(6px, -8px) scaleX(.6); }
+      50% { transform: translate(12px, -4px) scaleX(1); }
+      75% { transform: translate(6px, -10px) scaleX(.6); }
+    }
+
+    /* ---------- hero / title screen ---------- */
+    .hero {
+      min-height: calc(100vh - 28px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title {
+      position: relative;
+      z-index: 5;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px 10px;
+      text-align: center;
+    }
+
+    .eyebrow { color: #fff; font-size: 12px; margin-bottom: 26px; text-shadow: 0 0 10px #3f6bff; }
+
+    .pill-wrap { position: relative; width: min(760px, 92vw); }
+
+    .tag {
+      position: absolute;
+      z-index: 3;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      padding: 6px 22px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--butter);
+      font-family: var(--pixel);
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .pill {
+      position: relative;
+      z-index: 2;
+      padding: 22px 9% 18px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ffffff 0%, #ffe3f3 50%, #f2a8d6 100%);
+      box-shadow: inset 0 3px 0 #fff, 0 10px 40px #3f6bff55;
+    }
+
+    .logo-wrap {
+      filter:
+        drop-shadow(1.5px 0 0 var(--ink)) drop-shadow(-1.5px 0 0 var(--ink))
+        drop-shadow(0 1.5px 0 var(--ink)) drop-shadow(0 -1.5px 0 var(--ink))
+        drop-shadow(6px 5px 0 #3f6bff);
+    }
+    .logo-wrap img, .logo-wrap canvas { display: block; width: 100%; height: auto; }
+
+    .burst {
+      position: absolute;
+      z-index: 1;
+      width: 34%;
+      top: -32%;
+      left: 4%;
+      fill: #fff;
+      animation: spin 30s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .cursor {
+      position: absolute;
+      z-index: 3;
+      width: 9%;
+      right: -2%;
+      bottom: -28%;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .tagline {
+      margin-top: 34px;
+      padding: 4px 26px 8px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      background: linear-gradient(180deg, #fbffe9, #c4ee6c);
+      font-size: clamp(22px, 3vw, 30px);
+      box-shadow: 0 3px 0 var(--ink);
+    }
+
+    .menu {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: min(520px, calc(100% - 32px));
+      margin: 30px auto 0;
+    }
+
+    .jelly {
+      display: block;
+      padding: 14px 12px;
+      border: 1.5px solid var(--ink);
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fbffe9 0%, #e3fa9e 45%, #b6e45c 100%);
+      box-shadow: inset 0 2px 0 #fff, inset 0 -5px 10px #7fb83455, 0 3px 0 var(--ink);
+      color: var(--ink);
+      font-family: var(--pixel);
+      font-size: 14px;
+      text-align: center;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .jelly:hover, .jelly:focus-visible { transform: translateY(-2px); outline: none; }
+    .jelly:hover::before, .jelly:focus-visible::before { content: "♥ "; color: #ff4fae; }
+    .jelly:active { transform: translateY(2px); box-shadow: inset 0 2px 0 #fff, 0 1px 0 var(--ink); }
+
+    .press {
+      position: relative;
+      z-index: 5;
+      margin: 26px 0 30px;
+      text-align: center;
+      color: #fff;
+      font-size: 13px;
+      animation: blink 1.2s steps(2) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ---------- shared section bits ---------- */
+    .sec { padding: 90px 6% 100px; }
+
+    .sec-head { position: relative; z-index: 5; text-align: center; max-width: 620px; margin: 0 auto 56px; }
+    .sec-head .px { font-size: 12px; color: #fff; text-shadow: 0 0 10px #3f6bff; }
+    .sec-head h2 { font-size: clamp(46px, 7vw, 84px); line-height: 1.1; margin: 8px 0 14px; color: #fff;
+      -webkit-text-stroke: 1.5px var(--ink); paint-order: stroke fill; text-shadow: 4px 4px 0 #3f6bff; }
+    .sec-head p:last-child { line-height: 1.7; }
+
+    .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s, transform .7s; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ---------- players ---------- */
+    .cards {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      padding: 20px 18px 18px;
+      border: 1.5px solid var(--ink);
+      border-radius: 20px;
+      background: linear-gradient(180deg, #ffffffee, #eef1ffdd);
+      box-shadow: 5px 5px 0 var(--ink);
+      text-align: center;
+      transition: transform .2s;
+    }
+    .card:hover { transform: translateY(-6px) rotate(-1deg); }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 70px;
+      border-radius: 18px 18px 0 0;
+      background: linear-gradient(180deg, var(--c), transparent);
+      opacity: .55;
+    }
+
+    .card .num { position: relative; display: flex; justify-content: space-between; font-size: 12px; }
+    .portrait {
+      position: relative;
+      display: block;
+      width: 100%;
+      max-width: 240px;
+      aspect-ratio: 5 / 8;
+      object-fit: cover;
+      margin: 10px auto 12px;
+      border: 1.5px solid var(--ink);
+      border-radius: 14px;
+      box-shadow: 0 0 0 4px var(--c), 0 0 24px var(--c);
+      transition: transform .3s;
+    }
+    .card:hover .portrait { transform: scale(1.03); }
+
+    .card h3 { font-size: 44px; line-height: 1; }
+    .role {
+      display: inline-block;
+      margin: 8px 0 12px;
+      padding: 3px 12px;
+      border: 1.5px solid var(--ink);
+      border-radius: 999px;
+      background: var(--c);
+      font-family: var(--pixel);
+      font-size: 11px;
+    }
+    .card p.line { font-size: 14px; line-height: 1.6; min-height: 4.8em; }
+    .card .meta { margin-top: 12px; font-size: 10px; color: #55558a; }
+
+    /* ---------- story ---------- */
+    .story {
+      background: linear-gradient(180deg, #f3f5ff 0%, #b8c6ff 32%, #4a55b8 58%, #141433 74%, var(--night) 100%);
+    }
+
+    .chapters { position: relative; z-index: 5; max-width: 920px; margin: 0 auto; display: grid; gap: 90px; }
+
+    .chapter {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .chapter:nth-child(even) .ch-text { order: 2; }
+
+    .ch-text .px { font-size: 12px; color: #3f6bff; }
+    .ch-text h3 { font-size: clamp(40px, 5vw, 58px); line-height: 1.1; margin: 4px 0 12px; }
+    .ch-text p { line-height: 1.8; }
+    .dark .ch-text { color: #e9ecff; }
+    .dark .ch-text .px { color: var(--lime); }
+
+    .notif {
+      padding: 16px 18px;
+      border: 1px solid #ffffffaa;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #ffffffd9, #e6ebffc4);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 40px #3f6bff40, inset 0 1px 0 #fff;
+      transition: transform .7s .25s, opacity .7s .25s;
+    }
+    .js .chapter .notif { opacity: 0; transform: translateX(40px) scale(.95); }
+    .js .chapter.in .notif { opacity: 1; transform: none; animation: ring .5s 1s 2; }
+    @keyframes ring { 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
+
+    .notif-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 12px; color: #55558a; }
+    .notif-top span:last-child { margin-left: auto; }
+    .app-ic {
+      display: grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #5b7cff, #ff86cc);
+    }
+    .app-ic img { width: 22px; }
+    .notif strong { display: block; font-size: 17px; margin-bottom: 2px; }
+    .notif small { color: #55558a; }
+
+    .dark .notif { background: linear-gradient(135deg, #1d1d3acc, #0d0d1ecc); border-color: #ffffff40; color: #fff; box-shadow: 0 0 50px #a46bff40; }
+    .dark .notif small, .dark .notif-top { color: #aab0dd; }
+
+    .redact { background: #e9ecff; color: transparent; border-radius: 3px; user-select: none; }
+    .stamp {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 6px 14px;
+      border: 2px solid var(--pink);
+      color: var(--pink);
+      font-family: var(--pixel);
+      font-size: 13px;
+      transform: rotate(-4deg);
+    }
+
+    /* ---------- night: bubbles + radar ---------- */
+    .night { background: radial-gradient(ellipse at 50% 40%, #1b1b44 0%, var(--night) 70%); color: #fff; }
+
+    .bubble {
+      position: absolute;
+      border-radius: 58% 42% 55% 45% / 50% 60% 40% 50%;
+      background:
+        radial-gradient(circle at 30% 25%, #ffffffcc 0 5%, transparent 16%),
+        radial-gradient(circle at 50% 50%, transparent 56%, #8be9ff30 66%, #c48bff50 77%, #ff9ad850 88%, transparent 100%);
+      box-shadow: inset 0 0 14px #c9a6ff55, inset -6px -8px 18px #7ef0ff33;
+      animation: float 7s ease-in-out infinite;
+      animation-delay: var(--d, 0s);
+      pointer-events: none;
+    }
+
+    .radar { height: 260vh; }
+    .sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .sticky > .px:first-child { font-size: 12px; color: var(--lime); }
+
+    .scope {
+      --k: 1;
+      position: relative;
+      width: min(420px, 78vw, 52vh);
+      aspect-ratio: 1;
+      border: 1.5px solid #b8c6ff66;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, transparent 0 calc(12.5% - 1px), #b8c6ff2a calc(12.5% - 1px) 12.5%);
+    }
+    .scope::before, .scope::after {
+      content: "";
+      position: absolute;
+      background: #b8c6ff2a;
+    }
+    .scope::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+    .scope::after { top: 50%; left: 0; right: 0; height: 1px; }
+
+    .sweep {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #d6f77a55, transparent 25%);
+      animation: spin 3s linear infinite;
+    }
+
+    #dither {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 46%;
+      transform: translate(-50%, -50%);
+      image-rendering: pixelated;
+    }
+
+    .blip {
+      position: absolute;
+      left: calc(50% + var(--x) * var(--k) * 42%);
+      top: calc(50% + var(--y) * var(--k) * 42%);
+      transform: translate(-50%, -50%);
+      padding: 4px 10px;
+      border: 1.5px solid var(--ink);
+      border-radius: 999px;
+      background: var(--c);
+      box-shadow: 0 0 18px var(--c);
+      color: var(--ink);
+      font-family: var(--pixel);
+      font-size: 11px;
+    }
+
+    .scope.met { animation: pulse 1.4s ease-out infinite; }
+    @keyframes pulse {
+      from { box-shadow: 0 0 0 0 #ff86cc88; }
+      to { box-shadow: 0 0 0 40px #ff86cc00; }
+    }
+
+    .dist { font-size: 13px; color: #aab0dd; }
+    .dist b { color: #fff; font-weight: 400; }
+
+    .near-pop {
+      width: min(340px, 90%);
+      text-align: left;
+      opacity: 0;
+      transform: translateY(20px) scale(.95);
+      transition: opacity .4s, transform .4s;
+    }
+    .near-pop.show { opacity: 1; transform: none; }
+
+    #visits { font-size: 11px; color: var(--pink); }
+
+    /* ---------- launch ---------- */
+    .launch { text-align: center; }
+
+    .count {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .count div {
+      min-width: 110px;
+      padding: 16px 10px 12px;
+      border: 1.5px solid var(--ink);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fbffe9 0%, #e3fa9e 45%, #b6e45c 100%);
+      box-shadow: inset 0 2px 0 #fff, 0 4px 0 var(--ink);
+    }
+    .count b { display: block; font-family: var(--pixel); font-size: 42px; font-weight: 700; line-height: 1; }
+    .count span { font-family: var(--pixel); font-size: 11px; }
+
+    .loading { position: relative; z-index: 5; width: min(520px, 100%); margin: 50px auto 0; }
+    .loading .row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; }
+    .bar { height: 26px; padding: 4px; border: 1.5px solid var(--ink); border-radius: 8px; background: #fff; }
+    .bar i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: repeating-linear-gradient(90deg, #ff86cc 0 12px, transparent 12px 16px);
+      transition: width 1.5s;
+    }
+
+    .follow { position: relative; z-index: 5; margin-top: 50px; }
+    .follow .px { font-size: 12px; }
+    .jelly.tiktok {
+      display: inline-block;
+      margin: 16px 0 10px;
+      padding: 18px 34px;
+      font-size: 17px;
+      background: linear-gradient(180deg, #fff0f8 0%, #ffb3dd 45%, #ff6fb8 100%);
+      box-shadow: inset 0 2px 0 #fff, inset 0 -5px 10px #d9408f55, 0 4px 0 var(--ink), 0 0 30px #ff86cc88;
+      animation: bob 2s ease-in-out infinite;
+    }
+    .jelly.tiktok:hover::before { content: ""; }
+    @keyframes bob { 50% { transform: translateY(-5px); } }
+    .follow .handle { color: #3f6bff; }
+
+    .launch .bye { position: relative; z-index: 5; margin-top: 46px; font-size: clamp(28px, 4vw, 40px); }
+
+    footer {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 10px 10px 4px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: #8a8ab0;
+      font-size: 11px;
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 900px) {
+      .cards { grid-template-columns: 1fr 1fr; }
+      .chapter, .chapter:nth-child(even) { grid-template-columns: 1fr; gap: 22px; }
+      .chapter:nth-child(even) .ch-text { order: 0; }
+    }
+
+    @media (max-width: 560px) {
+      body { padding: 8px; }
+      .screen { border-radius: 20px; margin-bottom: 8px; }
+      .status { padding: 14px 16px; font-size: 10px; }
+      .cards { grid-template-columns: 1fr; }
+      .menu { grid-template-columns: 1fr; }
+      .tag { font-size: 12px; top: -18px; }
+      .count { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+      .count div { min-width: 0; padding: 12px 4px 10px; }
+      .count b { font-size: 24px; }
+      .sec { padding: 70px 16px 80px; }
+      footer { justify-content: center; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+      .js .reveal, .js .chapter .notif { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- shared shapes; gradients must live in a rendered (not display:none) svg -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="g-jelly" cx="35%" cy="30%" r="75%">
+        <stop offset="0" stop-color="#f4ffd0" />
+        <stop offset=".45" stop-color="#b9e87a" />
+        <stop offset="1" stop-color="#6fae3a" />
+      </radialGradient>
+      <linearGradient id="g-chrome" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffffff" />
+        <stop offset=".35" stop-color="#c9cbd6" />
+        <stop offset=".6" stop-color="#8d90a3" />
+        <stop offset="1" stop-color="#eef0f7" />
+      </linearGradient>
+    </defs>
+    <symbol id="spark" viewBox="0 0 24 24">
+      <path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" />
+    </symbol>
+    <symbol id="heart" viewBox="0 0 24 22">
+      <path fill="url(#g-jelly)" stroke="#4f8a2a" stroke-width=".6" d="M12 21C5 15 0 11 0 6C0 2.5 2.8 0 6 0C8.5 0 10.6 1.4 12 3.5C13.4 1.4 15.5 0 18 0C21.2 0 24 2.5 24 6C24 11 19 15 12 21Z" />
+      <ellipse cx="6.5" cy="5" rx="3" ry="1.6" fill="#fff" opacity=".85" transform="rotate(-25 6.5 5)" />
+    </symbol>
+    <symbol id="fly" viewBox="0 0 24 24">
+      <path d="M12 12C6 2 0 4 2 11C3 15 8 15 12 12ZM12 12C18 2 24 4 22 11C21 15 16 15 12 12ZM12 12C7 16 5 22 10 21C12 20 12 16 12 12ZM12 12C17 16 19 22 14 21C12 20 12 16 12 12Z" />
+    </symbol>
+    <symbol id="star" viewBox="0 0 24 24">
+      <polygon fill="url(#g-chrome)" stroke="#6d7085" stroke-width=".5" points="12,1 15,9 23,9 17,14 19,22 12,17 5,22 7,14 1,9 9,9" />
+    </symbol>
+  </svg>
+
+  <!-- ================= TITLE SCREEN ================= -->
+  <header class="screen hero" id="top">
+    <div class="dots"></div>
+    <div class="status px">
+      <span>NEARI OS</span>
+      <span id="clock">12:00</span>
+      <span>4 NEARBY ▮▮▮▯</span>
+    </div>
+
+    <svg class="deco spark" style="width:46px;top:16%;left:8%"><use href="#spark" /></svg>
+    <svg class="deco spark" style="width:22px;top:24%;left:15%;--d:1s"><use href="#spark" /></svg>
+    <svg class="deco spark" style="width:34px;top:70%;right:9%;--d:.5s"><use href="#spark" /></svg>
+    <svg class="deco spark" style="width:18px;bottom:14%;left:22%;--d:2s"><use href="#spark" /></svg>
+    <svg class="deco" style="width:74px;top:14%;right:10%;--d:.8s"><use href="#heart" /></svg>
+    <svg class="deco" style="width:58px;bottom:22%;left:6%;--d:1.6s"><use href="#heart" /></svg>
+    <svg class="deco fly" style="width:30px;top:36%;right:18%"><use href="#fly" /></svg>
+    <svg class="deco fly" style="width:24px;bottom:30%;left:18%;--d:1s"><use href="#fly" /></svg>
+    <svg class="deco fly lime" style="width:22px;top:52%;left:4%;--d:.4s"><use href="#fly" /></svg>
+    <svg class="deco" style="width:40px;bottom:12%;right:22%;--d:1.2s"><use href="#star" /></svg>
+    <svg class="deco" style="width:28px;top:20%;left:30%;--d:2.4s"><use href="#star" /></svg>
+
+    <div class="title">
+      <p class="eyebrow px">4 PHONES · 1 APP · 0 IDEA WHY</p>
+
+      <div class="pill-wrap">
+        <span class="tag">MARCH 2027</span>
+        <svg class="burst" viewBox="-50 -50 100 100" aria-hidden="true"><polygon id="burst" /></svg>
+        <div class="pill">
+          <div class="logo-wrap">
+            <img id="logo" src="neari-logo-clean.png" alt="NEARI">
+          </div>
+        </div>
+        <svg class="cursor" viewBox="0 0 16 25" aria-hidden="true">
+          <polygon fill="url(#g-chrome)" stroke="#16163a" stroke-width="1" stroke-linejoin="round" points="1,1 1,20 5.5,15.5 9,23.5 12,22.3 8.6,14.4 15,14.4" />
+        </svg>
+      </div>
+
+      <p class="tagline script">closer than yesterday</p>
+    </div>
+
+    <nav class="menu" aria-label="Sections">
+      <a class="jelly" href="#players">SELECT PLAYER</a>
+      <a class="jelly" href="#story">PLAY STORY</a>
+      <a class="jelly" href="#radar">RADAR</a>
+      <a class="jelly" href="#launch">LAUNCH</a>
+    </nav>
+
+    <p class="press px">PRESS START ✦</p>
+  </header>
+
+  <main>
+    <!-- ================= PLAYERS ================= -->
+    <!-- Edit a girl: change the text, her --c color, or swap her girl-*.jpg portrait (cropped from characters.jpg) -->
+    <section class="screen sec" id="players">
+      <div class="dots"></div>
+      <svg class="deco spark" style="width:30px;top:8%;left:10%"><use href="#spark" /></svg>
+      <svg class="deco fly" style="width:26px;top:10%;right:12%;--d:.6s"><use href="#fly" /></svg>
+
+      <header class="sec-head reveal">
+        <p class="px">00 // SELECT PLAYER</p>
+        <h2 class="script">the four of them</h2>
+        <p>Same school. Same hallways. Not a single word between them. Until their phones decided otherwise.</p>
+      </header>
+
+      <div class="cards">
+        <article class="card reveal" style="--c:#f3e6cc">
+          <p class="num px"><span>P1</span><span>♥♥♥</span></p>
+          <img class="portrait" src="girl-mo.jpg" alt="Mo in bead art: long dark hair, glasses, cream scarf, white boots">
+          <h3 class="script">Mo</h3>
+          <span class="role">CLASS PRESIDENT</span>
+          <p class="line">Keeps the whole class in line. Can't quite do the same for herself.</p>
+          <p class="meta px">SIGNAL ▮▮▯▯ · STATUS ???</p>
+        </article>
+
+        <article class="card reveal" style="--c:#e8c27a">
+          <p class="num px"><span>P2</span><span>♥♥♥</span></p>
+          <img class="portrait" src="girl-liz.jpg" alt="Liz in bead art: long dark hair, gold tiara, grey dress, brown shoes">
+          <h3 class="script">Liz</h3>
+          <span class="role">ALWAYS RUNNING</span>
+          <p class="line">Out the door before anyone can ask. Never looks where she's going.</p>
+          <p class="meta px">SIGNAL ▮▯▯▯ · STATUS ???</p>
+        </article>
+
+        <article class="card reveal" style="--c:#c9a3f2">
+          <p class="num px"><span>P3</span><span>♥♥♥</span></p>
+          <img class="portrait" src="girl-sele.jpg" alt="Sele in bead art: black hair with a purple streak, glasses, black outfit">
+          <h3 class="script">Sele</h3>
+          <span class="role">CLASS PRESIDENT</span>
+          <p class="line">Runs the class, but keeps her walls up. Nobody really gets past them.</p>
+          <p class="meta px">SIGNAL ▮▮▯▯ · STATUS ???</p>
+        </article>
+
+        <article class="card reveal" style="--c:#dcb08a">
+          <p class="num px"><span>P4</span><span>♥♥♥</span></p>
+          <img class="portrait" src="girl-sara.jpg" alt="Sara in bead art: light brown bob with bangs, black dress with a silver belt">
+          <h3 class="script">Sara</h3>
+          <span class="role">THE FUNNY ONE</span>
+          <p class="line">Skips class more than she should. Somehow still keeps up with everyone.</p>
+          <p class="meta px">SIGNAL ▮▮▮▯ · STATUS ???</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= STORY ================= -->
+    <section class="screen sec story" id="story">
+      <div class="bubble" style="width:120px;height:110px;bottom:12%;left:6%"></div>
+      <div class="bubble" style="width:70px;height:80px;bottom:30%;right:8%;--d:2s"></div>
+      <div class="bubble" style="width:40px;height:40px;bottom:6%;right:30%;--d:1s"></div>
+      <svg class="deco spark" style="width:26px;bottom:20%;left:40%;--d:1.4s"><use href="#spark" /></svg>
+
+      <header class="sec-head reveal">
+        <p class="px">01 // PLAY STORY</p>
+        <h2 class="script">how it started</h2>
+      </header>
+
+      <div class="chapters">
+        <div class="chapter reveal">
+          <div class="ch-text">
+            <p class="px">CHAPTER 01</p>
+            <h3 class="script">out of nowhere</h3>
+            <p>One ordinary morning, an app nobody downloaded shows up on four phones. It's not in any store and there's no way to delete it. Just a logo, and a quiet ping.</p>
+          </div>
+          <div class="notif">
+            <div class="notif-top"><span class="app-ic"><img src="neari-logo-clean.png" alt=""></span><span>NEARI</span><span>now</span></div>
+            <strong>NEARI installed.</strong>
+            <small>Welcome. Someone is out there.</small>
+          </div>
+        </div>
+
+        <div class="chapter reveal">
+          <div class="ch-text">
+            <p class="px">CHAPTER 02</p>
+            <h3 class="script">near</h3>
+            <p>Liz runs from home, too fast to look where she's going, and crashes straight into Sara. Two phones hit the pavement and ring at the same time. Liz grabs hers and keeps running. She has no idea Sara's phone just said the same thing.</p>
+          </div>
+          <div class="notif">
+            <div class="notif-top"><span class="app-ic"><img src="neari-logo-clean.png" alt=""></span><span>NEARI</span><span>now</span></div>
+            <strong>NEAR</strong>
+            <small>1 signal · 0 m away</small>
+          </div>
+        </div>
+
+        <div class="chapter dark reveal">
+          <div class="ch-text">
+            <p class="px">CHAPTER 03</p>
+            <h3 class="script">that night</h3>
+            <p>Four bedrooms. Four phones light up in the dark with the same message. For the first time in a long time, all four of them fall asleep feeling a little lighter.</p>
+          </div>
+          <div class="notif">
+            <div class="notif-top"><span class="app-ic"><img src="neari-logo-clean.png" alt=""></span><span>NEARI</span><span>23:47</span></div>
+            <strong>You're closer than yesterday.</strong>
+            <small>connection level: increasing ✦</small>
+          </div>
+        </div>
+
+        <div class="chapter dark reveal">
+          <div class="ch-text">
+            <p class="px">CHAPTER 04 · LOCKED</p>
+            <h3 class="script">four in one room</h3>
+            <p>At school the bumping never stops, and neither do the phones. Then one day, one of them is <span class="redact">pushed too far and runs to the bathroom</span>. Two <span class="redact">class presidents</span> follow. One more just wants to <span class="redact">skip class</span>. For the first time, all four are in the same room, and they <span class="redact">realize they have the same problems</span>.</p>
+            <span class="stamp">UNLOCKS IN MARCH</span>
+          </div>
+          <div class="notif">
+            <div class="notif-top"><span class="app-ic"><img src="neari-logo-clean.png" alt=""></span><span>NEARI</span><span>now</span></div>
+            <strong>████ ████</strong>
+            <small>4 signals · 0 m away</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= RADAR (scroll to bring them together) ================= -->
+    <section class="screen night radar" id="radar">
+      <div class="bubble" style="width:160px;height:150px;top:8%;left:5%"></div>
+      <div class="bubble" style="width:90px;height:100px;top:40%;right:6%;--d:1.5s"></div>
+      <div class="bubble" style="width:60px;height:56px;top:72%;left:12%;--d:3s"></div>
+      <div class="bubble" style="width:120px;height:130px;bottom:4%;right:16%;--d:.7s"></div>
+
+      <div class="sticky">
+        <p class="px">02 // NEARI RADAR · KEEP SCROLLING</p>
+        <div class="scope" id="scope">
+          <div class="sweep"></div>
+          <canvas id="dither" width="48" height="44" aria-hidden="true"></canvas>
+          <span class="blip" style="--x:-.8;--y:-.6;--c:#f3e6cc">MO</span>
+          <span class="blip" style="--x:.9;--y:-.3;--c:#e8c27a">LIZ</span>
+          <span class="blip" style="--x:-.45;--y:.85;--c:#c9a3f2">SELE</span>
+          <span class="blip" style="--x:.6;--y:.7;--c:#dcb08a">SARA</span>
+        </div>
+        <p class="dist px">DISTANCE BETWEEN THEM <b id="dist">1240 M</b></p>
+        <div class="notif dark-notif near-pop" id="nearPop">
+          <div class="notif-top"><span class="app-ic"><img src="neari-logo-clean.png" alt=""></span><span>NEARI</span><span>now</span></div>
+          <strong>NEAR ✦</strong>
+          <small>4 signals found. They were never random.</small>
+        </div>
+        <p id="visits" class="px"></p>
+      </div>
+    </section>
+
+    <!-- ================= LAUNCH ================= -->
+    <section class="screen sec launch" id="launch">
+      <div class="dots"></div>
+      <svg class="deco" style="width:60px;top:10%;left:8%"><use href="#heart" /></svg>
+      <svg class="deco spark" style="width:36px;top:14%;right:12%;--d:1s"><use href="#spark" /></svg>
+      <svg class="deco fly" style="width:28px;bottom:16%;left:14%;--d:.5s"><use href="#fly" /></svg>
+      <svg class="deco" style="width:44px;bottom:12%;right:10%;--d:1.8s"><use href="#star" /></svg>
+
+      <header class="sec-head reveal">
+        <p class="px">03 // INCOMING TRANSMISSION</p>
+        <h2 class="script">see you in march</h2>
+      </header>
+
+      <div class="count reveal" id="count">
+        <div><b id="cd-d">--</b><span>DAYS</span></div>
+        <div><b id="cd-h">--</b><span>HRS</span></div>
+        <div><b id="cd-m">--</b><span>MIN</span></div>
+        <div><b id="cd-s">--</b><span>SEC</span></div>
+      </div>
+
+      <div class="loading reveal">
+        <p class="row px"><span>LOADING NEARI…</span><span id="pct">0%</span></p>
+        <div class="bar"><i id="bar"></i></div>
+      </div>
+
+      <div class="follow reveal">
+        <p class="px">DON'T LOSE THE SIGNAL</p>
+        <a class="jelly tiktok" href="https://www.tiktok.com/@naeri_officiaal" target="_blank" rel="noopener">♪ FOLLOW ON TIKTOK</a>
+        <p class="px handle">@naeri_officiaal</p>
+      </div>
+
+      <p class="bye script reveal">four stories. one signal.</p>
+    </section>
+  </main>
+
+  <footer class="px">
+    <span>NEARI © 2027</span>
+    <a href="https://www.tiktok.com/@naeri_officiaal" target="_blank" rel="noopener" style="color:inherit">♪ TIKTOK @NAERI_OFFICIAAL</a>
+    <span>END OF TRANSMISSION ✦</span>
+  </footer>
+
+  <script>
+    const LAUNCH = new Date(2027, 2, 1);      // 1 March 2027, local time
+    const LOADING_FROM = new Date(2026, 10, 1); // when the loading bar starts counting
+
+    // ---- live clock in the status bar
+    const clock = document.getElementById("clock");
+    const tick = () => clock.textContent = new Date().toTimeString().slice(0, 5);
+    tick();
+    setInterval(tick, 10000);
+
+    // ---- starburst behind the logo pill
+    document.getElementById("burst").setAttribute("points",
+      Array.from({ length: 28 }, (_, i) => {
+        const r = i % 2 ? 26 : 48, a = i * Math.PI / 14;
+        return (r * Math.cos(a)).toFixed(1) + "," + (r * Math.sin(a)).toFixed(1);
+      }).join(" "));
+
+    // ---- tint the logo white → lime (canvas, so it also works when opened as a local file)
+    const logo = document.getElementById("logo");
+    const tintLogo = () => {
+      const c = document.createElement("canvas");
+      c.width = logo.naturalWidth;
+      c.height = logo.naturalHeight;
+      c.setAttribute("role", "img");
+      c.setAttribute("aria-label", "NEARI");
+      const g = c.getContext("2d");
+      g.drawImage(logo, 0, 0);
+      g.globalCompositeOperation = "source-in";
+      const grad = g.createLinearGradient(0, 0, 0, c.height);
+      grad.addColorStop(.15, "#ffffff");
+      grad.addColorStop(.55, "#ecffc6");
+      grad.addColorStop(1, "#a7dc4f");
+      g.fillStyle = grad;
+      g.fillRect(0, 0, c.width, c.height);
+      logo.replaceWith(c);
+    };
+    logo.complete && logo.naturalWidth ? tintLogo() : logo.addEventListener("load", tintLogo);
+
+    // ---- scroll reveal
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    }), { threshold: .2 });
+    document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+    // ---- radar: the further you scroll, the closer they get; the heart fills as they meet
+    const radar = document.getElementById("radar");
+    const scope = document.getElementById("scope");
+    const dist = document.getElementById("dist");
+    const nearPop = document.getElementById("nearPop");
+    const dither = document.getElementById("dither").getContext("2d");
+    const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(v => (v + .5) / 16);
+
+    const drawHeart = t => {
+      const W = 48, H = 44;
+      dither.clearRect(0, 0, W, H);
+      for (let py = 0; py < H; py++) for (let px = 0; px < W; px++) {
+        const x = (px - W / 2 + .5) / 17, y = -(py - H / 2.2) / 17;
+        if ((x * x + y * y - 1) ** 3 - x * x * y ** 3 > 0) continue;
+        const glow = 1 - Math.hypot(x + .45, y - .55) / 2.2; // highlight on the upper-left lobe
+        const v = t * (.35 + .65 * glow);
+        dither.fillStyle = v > BAYER[(py % 4) * 4 + (px % 4)] ? "#ffd1ec" : "#ffffff14";
+        dither.fillRect(px, py, 1, 1);
+      }
+    };
+
+    let lastT = -1;
+    const onScroll = () => {
+      const r = radar.getBoundingClientRect();
+      const t = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));
+      if (Math.abs(t - lastT) < .005) return;
+      lastT = t;
+      scope.style.setProperty("--k", (1 - t).toFixed(3));
+      dist.textContent = Math.round(1240 * (1 - t)) + " M";
+      const met = t > .96;
+      scope.classList.toggle("met", met);
+      nearPop.classList.toggle("show", met);
+      drawHeart(t);
+    };
+    addEventListener("scroll", () => requestAnimationFrame(onScroll), { passive: true });
+    onScroll();
+
+    // ---- "closer than yesterday": count the days you came back
+    const visits = document.getElementById("visits");
+    let days = 1;
+    try {
+      const today = new Date().toDateString();
+      const saved = JSON.parse(localStorage.getItem("neari-visits") || "{}");
+      days = (saved.n || 0) + (saved.day === today ? 0 : 1);
+      localStorage.setItem("neari-visits", JSON.stringify({ n: days, day: today }));
+    } catch (e) {}
+    visits.textContent = days > 1
+      ? `DAY ${days} OF YOUR SIGNAL · YOU'RE CLOSER THAN YESTERDAY ✦`
+      : "FIRST SIGNAL DETECTED · COME BACK TOMORROW ✦";
+
+    // ---- countdown + loading bar
+    const pad = n => String(n).padStart(2, "0");
+    const countdown = () => {
+      const left = LAUNCH - new Date();
+      if (left <= 0) {
+        document.getElementById("count").innerHTML = '<div><b>LIVE</b><span>NEARI IS HERE ✦</span></div>';
+        document.getElementById("bar").style.width = "100%";
+        document.getElementById("pct").textContent = "100%";
+        return clearInterval(cdTimer);
+      }
+      const s = Math.floor(left / 1000);
+      document.getElementById("cd-d").textContent = Math.floor(s / 86400);
+      document.getElementById("cd-h").textContent = pad(Math.floor(s / 3600) % 24);
+      document.getElementById("cd-m").textContent = pad(Math.floor(s / 60) % 60);
+      document.getElementById("cd-s").textContent = pad(s % 60);
+      const p = Math.min(99, Math.max(1, Math.floor((new Date() - LOADING_FROM) / (LAUNCH - LOADING_FROM) * 100)));
+      document.getElementById("bar").style.width = p + "%";
+      document.getElementById("pct").textContent = p + "%";
+    };
+    const cdTimer = setInterval(countdown, 1000);
+    countdown();
+  </script>
+
+</body>
+</html>
